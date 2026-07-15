@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport Management System - Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9f5; color: #1f1f1f; line-height: 1.7; }
+        .page { max-width: 900px; margin: 0 auto; padding: 60px 40px; }
+        @media print {
+            .page { padding: 20px; max-width: 100%; }
+            .no-print { display: none; }
+            body { background: white; }
+        }
+        h1 { font-size: 32px; color: #2f3a1d; margin-bottom: 8px; border-bottom: 3px solid #cfff74; padding-bottom: 12px; }
+        h2 { font-size: 22px; color: #2f3a1d; margin-top: 40px; margin-bottom: 12px; border-left: 4px solid #cfff74; padding-left: 14px; }
+        h3 { font-size: 16px; color: #2f3a1d; margin-top: 24px; margin-bottom: 8px; }
+        p { margin-bottom: 12px; color: #333; font-size: 14px; }
+        .subtitle { color: #6b6b6b; font-size: 16px; margin-bottom: 30px; }
+        .meta { color: #6b6b6b; font-size: 13px; margin-bottom: 30px; }
+        code { background: #e8f5e9; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 13px; color: #2e7d32; }
+        pre { background: #1a2410; color: #cfff74; padding: 20px; border-radius: 12px; overflow-x: auto; font-size: 12px; line-height: 1.6; margin: 16px 0 20px 0; font-family: 'Courier New', monospace; }
+        pre code { background: none; padding: 0; color: inherit; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+        th { background: #2f3a1d; color: white; padding: 10px 14px; text-align: left; font-size: 12px; }
+        td { padding: 10px 14px; border-bottom: 1px solid #e5e5e5; }
+        tr:nth-child(even) { background: #f8f9f5; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; }
+        .warn-box { background: #fff3e0; border-left: 4px solid #e65100; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; }
+        .error-box { background: #ffebee; border-left: 4px solid #c62828; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; }
+        .success-box { background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; }
+        .file-tree { background: #1a2410; color: #cfff74; padding: 20px 24px; border-radius: 12px; font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.8; margin: 16px 0; white-space: pre; }
+        .color-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: middle; margin-right: 6px; border: 1px solid #e5e5e5; }
+        ul, ol { margin: 8px 0 16px 20px; font-size: 14px; }
+        li { margin-bottom: 6px; }
+        .toc { background: white; padding: 20px 24px; border-radius: 12px; border: 1px solid #e5e5e5; margin: 20px 0 30px 0; }
+        .toc a { color: #2e7d32; text-decoration: none; font-size: 13px; display: block; padding: 3px 0; }
+        .toc a:hover { color: #cfff74; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        .badge-green { background: #e8f5e9; color: #2e7d32; }
+        .badge-orange { background: #fff3e0; color: #e65100; }
+        .badge-red { background: #ffebee; color: #c62828; }
+        .badge-blue { background: #e3f2fd; color: #1976d2; }
+    </style>
+</head>
+<body>
+<div class="page">
+
+<!-- ============================================================ -->
+<h1>Airport Management System</h1>
+<p class="subtitle">JavaFX Edition &mdash; Complete Project Documentation</p>
+<p class="meta">Version 1.0 &bull; Built with Java 17 + JavaFX 11 &bull; All UI coded programmatically (no FXML)</p>
+
+<!-- ============================================================ -->
+<div class="toc">
+<strong style="color:#2f3a1d; font-size:14px;">Table of Contents</strong>
+<a href="#overview">1. Project Overview</a>
+<a href="#requirements">2. System Requirements</a>
+<a href="#installation">3. Installation &amp; How to Run</a>
+<a href="#architecture">4. Architecture &amp; Project Structure</a>
+<a href="#color-system">5. Color System &amp; Design</a>
+<a href="#class-hierarchy">6. Class Hierarchy &amp; Data Model</a>
+<a href="#pages">7. Page-by-Page Breakdown</a>
+<a href="#navigation">8. Navigation System</a>
+<a href="#search">9. Search System</a>
+<a href="#chat">10. Chat System (LAN)</a>
+<a href="#reports">11. Reports System</a>
+<a href="#welcome">12. Welcome Screen</a>
+<a href="#bugs-fixed">13. Bugs Fixed</a>
+<a href="#known-issues">14. Known Issues &amp; Limitations</a>
+<a href="#commands">15. Commands Reference</a>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="overview">1. Project Overview</h2>
+<p>A complete desktop application for managing airport operations including flights, passengers, pilots, co-pilots, reports, and LAN chat. Built entirely in Java with JavaFX for the graphical interface. All UI is created programmatically in Java code &mdash; no FXML files or Scene Builder used.</p>
+
+<h3>Key Features</h3>
+<ul>
+    <li><strong>Dashboard</strong> &mdash; Overview with stat cards, management grid, upcoming flights table, quick actions</li>
+    <li><strong>Flight Management</strong> &mdash; Full CRUD with inline status change (SCHEDULED/BOARDING/DEPARTED/CANCELLED)</li>
+    <li><strong>Passenger Management</strong> &mdash; Add, view, search, delete passengers</li>
+    <li><strong>Pilot Roster</strong> &mdash; Salary, flight hours, license management</li>
+    <li><strong>Co-Pilot Roster</strong> &mdash; Salary, hours, language management</li>
+    <li><strong>Reports</strong> &mdash; 5 report types with save-to-file functionality</li>
+    <li><strong>Chat (LAN)</strong> &mdash; Real-time socket chat via Python server</li>
+    <li><strong>Search</strong> &mdash; Global search bar filters the current page's table</li>
+    <li><strong>Welcome Screen</strong> &mdash; Animated landing page with airplane pulse</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="requirements">2. System Requirements</h2>
+<table>
+    <tr><th>Component</th><th>Requirement</th></tr>
+    <tr><td>Java JDK</td><td>OpenJDK 17 (tested with 17.0.18)</td></tr>
+    <tr><td>JavaFX</td><td>OpenJFX 11 (system-installed JARs)</td></tr>
+    <tr><td>Operating System</td><td>Linux (tested on Ubuntu-based distro)</td></tr>
+    <tr><td>Python</td><td>Python 3.x (for chat server only)</td></tr>
+    <tr><td>JavaFX JARs Location</td><td><code>/usr/share/openjfx/lib/</code></td></tr>
+    <tr><td>Project Lib JARs</td><td><code>project/lib/*.jar</code> (copies of JavaFX JARs)</td></tr>
+</table>
+
+<div class="info-box">
+<strong>Note:</strong> The application works with system-installed OpenJFX. No Maven/Gradle needed.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="installation">3. Installation &amp; How to Run</h2>
+
+<h3>3.1 Compile</h3>
+<pre><code>cd /home/idkrealyyea/Desktop/PROJECT/project
+rm -rf bin
+mkdir -p bin
+javac \
+  --module-path "lib/javafx.base.jar:lib/javafx.controls.jar:lib/javafx.graphics.jar:lib/javafx.fxml.jar:lib/javafx.media.jar:lib/javafx.swing.jar:lib/javafx.web.jar" \
+  --add-modules javafx.controls,javafx.graphics,javafx.base,javafx.fxml \
+  -d bin \
+  $(find src -name "*.java" ! -name "Chatwindowcontroller.java") 2>&1</code></pre>
+
+<h3>3.2 Run (via F5 in VS Code)</h3>
+<p>Use the <strong>"Airport Management"</strong> configuration in <code>.vscode/launch.json</code>. The F5 key launches via this config.</p>
+
+<div class="warn-box">
+<strong>Important:</strong> Do NOT use the green "Run" button in VS Code &mdash; it does not pass the required JVM module arguments. Always use F5 (debug) or the launch.json config.
+</div>
+
+<h3>3.3 Run via Terminal</h3>
+<pre><code>cd /home/idkrealyyea/Desktop/PROJECT/project
+java --module-path "lib/javafx.base.jar:lib/javafx.controls.jar:lib/javafx.graphics.jar:lib/javafx.fxml.jar:lib/javafx.media.jar:lib/javafx.swing.jar:lib/javafx.web.jar" \
+  --add-modules javafx.controls,javafx.graphics,javafx.base,javafx.fxml \
+  -cp bin Launcher 2>&1</code></pre>
+
+<h3>3.4 Run Chat Server</h3>
+<pre><code>cd /home/idkrealyyea/Desktop/PROJECT/project/server
+python3 server.py</code></pre>
+<p>The server listens on <code>0.0.0.0:5555</code> and supports multiple simultaneous clients.</p>
+
+<h3>3.5 Entry Point</h3>
+<p><code>Launcher.java</code> &rarr; calls <code>Main.main()</code> &rarr; JavaFX launches the application.</p>
+<p>This two-class pattern bypasses JDK 17's module system check that prevents launching from <code>Main</code> directly.</p>
+
+<!-- ============================================================ -->
+<h2 id="architecture">4. Architecture &amp; Project Structure</h2>
+
+<div class="file-tree">project/
+├── .vscode/
+│   ├── launch.json          # Single config: "Airport Management"
+│   └── settings.json        # referencesLibraries for project/lib/*.jar
+├── bin/                     # Compiled .class files
+├── lib/                     # JavaFX JAR copies (javafx.base.jar, javafx.controls.jar, etc.)
+├── server/
+│   └── server.py            # Python TCP socket chat server
+└── src/
+    ├── Launcher.java        # Entry point (bypasses JDK 17 module check)
+    ├── Main.java            # JavaFX Application: creates root layout, welcome screen, navigation
+    ├── Sidebar.java         # Left sidebar: logo, nav buttons, admin card
+    ├── TopBar.java          # Top bar: title, search, notifications, date/time, profile
+    ├── Colors.java          # All color constants + color families
+    ├── WelcomePage.java     # Animated welcome/splash screen
+    ├── DashboardPage.java   # Dashboard: stats, management grid, flights table, quick actions
+    ├── FlightsPage.java     # Flight management: table, status ComboBox, add dialog
+    ├── PassengersPage.java  # Passenger management: table, add dialog, search filter
+    ├── PilotsPage.java      # Pilot management: table, salary, licenses, add dialog
+    ├── CoPilotsPage.java    # Co-pilot management: table, languages, add dialog
+    ├── ReportsPage.java     # Reports center: 5 report types, save to .txt
+    ├── ChatPage.java        # Chat interface: connect, send, message area
+    ├── SettingsPage.java    # Settings: system info display
+    ├── adding.java          # Static ArrayLists for data storage + console add methods
+    ├── checking.java        # Input validation utilities (getValidInt, getValidDouble, etc.)
+    ├── Flight.java          # Flight class (extends status) with FlightStatus enum
+    ├── Flighter.java        # Pilot class (extends Employee)
+    ├── modiefoun.java       # Co-pilot class (extends Employee)
+    ├── Passengere.java      # Passenger class (standalone, does NOT extend Person)
+    ├── Person.java          # Abstract base class (name, identity, nationality)
+    ├── Employee.java        # Abstract class extending Person
+    ├── status.java          # Contains FlightStatus enum (SCHEDULED, BOARDING, DEPARTED, CANCELLED)
+    ├── normalemployee.java  # (Legacy/unused)
+    ├── App.java             # (Legacy/unused - replaced by Main.java)
+    ├── chatclient.java      # Socket chat client for JavaFX
+    └── Chatwindowcontroller.java  # (Excluded from compilation - unused)</div>
+
+<!-- ============================================================ -->
+<h2 id="color-system">5. Color System &amp; Design</h2>
+
+<h3>5.1 Core Colors</h3>
+<table>
+    <tr><th>Constant</th><th>Hex</th><th>Preview</th><th>Usage</th></tr>
+    <tr><td><code>BACKGROUND</code></td><td><span class="color-swatch" style="background:#F8F9F5"></span><code>#F8F9F5</code></td><td><span class="color-swatch" style="background:#F8F9F5"></span></td><td>Page background</td></tr>
+    <tr><td><code>SIDEBAR</code></td><td><span class="color-swatch" style="background:#2F3A1D"></span><code>#2F3A1D</code></td><td><span class="color-swatch" style="background:#2F3A1D"></span></td><td>Sidebar, welcome banner</td></tr>
+    <tr><td><code>ACCENT</code></td><td><span class="color-swatch" style="background:#CFFF74"></span><code>#CFFF74</code></td><td><span class="color-swatch" style="background:#CFFF74"></span></td><td>Active nav, highlights, buttons</td></tr>
+    <tr><td><code>TEXT_PRIMARY</code></td><td><span class="color-swatch" style="background:#1F1F1F"></span><code>#1F1F1F</code></td><td><span class="color-swatch" style="background:#1F1F1F"></span></td><td>Headings, main text</td></tr>
+    <tr><td><code>TEXT_SECONDARY</code></td><td><span class="color-swatch" style="background:#6B6B6B"></span><code>#6B6B6B</code></td><td><span class="color-swatch" style="background:#6B6B6B"></span></td><td>Subtitles, descriptions</td></tr>
+    <tr><td><code>CARD</code></td><td><span class="color-swatch" style="background:#FFFFFF"></span><code>#FFFFFF</code></td><td><span class="color-swatch" style="background:#FFFFFF"></span></td><td>Card backgrounds</td></tr>
+    <tr><td><code>BORDER</code></td><td><span class="color-swatch" style="background:#E5E5E5"></span><code>#E5E5E5</code></td><td><span class="color-swatch" style="background:#E5E5E5"></span></td><td>Input borders</td></tr>
+</table>
+
+<h3>5.2 Color Families (per page/theme)</h3>
+<table>
+    <tr><th>Theme</th><th>LIGHT (bg)</th><th>MID (border)</th><th>SOLID (accent)</th></tr>
+    <tr><td>Flights</td><td><span class="color-swatch" style="background:#E3F2FD"></span><code>#E3F2FD</code></td><td><span class="color-swatch" style="background:#90CAF9"></span><code>#90CAF9</code></td><td><span class="color-swatch" style="background:#1976D2"></span><code>#1976D2</code></td></tr>
+    <tr><td>Passengers</td><td><span class="color-swatch" style="background:#E8F5E9"></span><code>#E8F5E9</code></td><td><span class="color-swatch" style="background:#A5D6A7"></span><code>#A5D6A7</code></td><td><span class="color-swatch" style="background:#2E7D32"></span><code>#2E7D32</code></td></tr>
+    <tr><td>Pilots</td><td><span class="color-swatch" style="background:#FFF3E0"></span><code>#FFF3E0</code></td><td><span class="color-swatch" style="background:#FFCC80"></span><code>#FFCC80</code></td><td><span class="color-swatch" style="background:#E65100"></span><code>#E65100</code></td></tr>
+    <tr><td>Co-Pilots</td><td><span class="color-swatch" style="background:#F3E5F5"></span><code>#F3E5F5</code></td><td><span class="color-swatch" style="background:#CE93D8"></span><code>#CE93D8</code></td><td><span class="color-swatch" style="background:#7B1FA2"></span><code>#7B1FA2</code></td></tr>
+    <tr><td>Reports</td><td><span class="color-swatch" style="background:#E0F7FA"></span><code>#E0F7FA</code></td><td><span class="color-swatch" style="background:#80DEEA"></span><code>#80DEEA</code></td><td><span class="color-swatch" style="background:#00838F"></span><code>#00838F</code></td></tr>
+    <tr><td>Chat</td><td><span class="color-swatch" style="background:#FFEBEE"></span><code>#FFEBEE</code></td><td><span class="color-swatch" style="background:#EF9A9A"></span><code>#EF9A9A</code></td><td><span class="color-swatch" style="background:#C62828"></span><code>#C62828</code></td></tr>
+    <tr><td>Settings</td><td><span class="color-swatch" style="background:#F5F5F5"></span><code>#F5F5F5</code></td><td><span class="color-swatch" style="background:#E0E0E0"></span><code>#E0E0E0</code></td><td><span class="color-swatch" style="background:#424242"></span><code>#424242</code></td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="class-hierarchy">6. Class Hierarchy &amp; Data Model</h2>
+
+<h3>6.1 Inheritance Tree</h3>
+<pre><code>Person (abstract)
+├── Employee (abstract)
+│   ├── Flighter (Pilot)
+│   └── modiefoun (Co-Pilot)
+└── (not used)
+
+status (contains FlightStatus enum)
+└── Flight (extends status)
+
+Passengere (standalone - does NOT extend Person)</code></pre>
+
+<h3>6.2 FlightStatus Enum</h3>
+<p>Defined inside <code>status.java</code>:</p>
+<pre><code>public enum FlightStatus {
+    SCHEDULED,
+    BOARDING,
+    DEPARTED,
+    CANCELLED
+}</code></pre>
+
+<h3>6.3 Key Class Details</h3>
+
+<table>
+    <tr><th>Class</th><th>Fields</th><th>Notes</th></tr>
+    <tr><td><code>Person</code></td><td>name, identity, nationality (all private String)</td><td>Abstract base class</td></tr>
+    <tr><td><code>Employee</code></td><td>extends Person + ided</td><td>Abstract, no additional fields used</td></tr>
+    <tr><td><code>Flighter</code></td><td>id, salary, hours, hourprice, rokhasList</td><td>Salary = input + (hours * 30)</td></tr>
+    <tr><td><code>modiefoun</code></td><td>id, salary, langsList, hours, hourprice</td><td>Co-pilot with languages</td></tr>
+    <tr><td><code>Flight</code></td><td>id, destination, numberofchairs, nameofCaptin, passengersList, copiloList, flightStatus</td><td>Extends <code>status</code></td></tr>
+    <tr><td><code>Passengere</code></td><td>id, name, identity, nationality, passport, passEndDate, distination</td><td>Standalone class</td></tr>
+    <tr><td><code>adding</code></td><td>flightersList, copilots, flightslists (all static ArrayLists)</td><td>Data storage</td></tr>
+</table>
+
+<div class="error-box">
+<strong>Important:</strong> <code>Passengere</code> does NOT extend <code>Person</code>. It has duplicate fields (name, identity, nationality) that shadow Person's fields.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="pages">7. Page-by-Page Breakdown</h2>
+
+<h3>7.1 Welcome Page</h3>
+<p><code>WelcomePage.java</code> &mdash; StackPane with dark gradient background, animated airplane, features grid, "Enter System" button.</p>
+<ul>
+    <li>Uses <code>StackPane overlay</code> pattern: the main app loads behind, welcome screen sits on top</li>
+    <li><code>setMaxWidth(Double.MAX_VALUE)</code> + <code>setMaxHeight(Double.MAX_VALUE)</code> ensures it fills the screen</li>
+    <li>Button calls <code>onEnter.run()</code> which removes the welcome overlay from <code>baseRoot</code></li>
+    <li>Uses <code>WelcomePage[] welcomeHolder</code> hack in Main.java to pass Runnable referencing the instance before assignment</li>
+    <li>Decorative elements have <code>setMouseTransparent(true)</code></li>
+</ul>
+
+<h3>7.2 Dashboard</h3>
+<p><code>DashboardPage.java</code> &mdash; Main overview page with:</p>
+<ul>
+    <li><strong>Welcome Banner:</strong> Dark gradient with live counts of flights, passengers, pilots, co-pilots</li>
+    <li><strong>4 Stat Cards:</strong> Light-colored cards with 5px colored accent line on left, letter icon, value</li>
+    <li><strong>Management Grid:</strong> 4 clickable cards linking to each section (flights, passengers, pilots, copilots)</li>
+    <li><strong>Upcoming Flights Table:</strong> Shows all flights with ID, destination, captain, seats, status</li>
+    <li><strong>Quick Actions:</strong> 5 shortcut buttons to navigate to each section</li>
+    <li>All cards use <code>border-radius: 28</code></li>
+</ul>
+
+<h3>7.3 Flights Page</h3>
+<p><code>FlightsPage.java</code> &mdash; Blue-themed flight management:</p>
+<ul>
+    <li>Full TableView with columns: ID, Destination, Captain, Seats, Passengers, Co-Pilots, Status, Actions</li>
+    <li><strong>Status Column:</strong> ComboBox with SCHEDULED/BOARDING/DEPARTED/CANCELLED &mdash; clicking changes flight status inline</li>
+    <li><strong>Add Flight Dialog:</strong> Modal dialog with destination, seats, captain (ComboBox from pilot list), co-pilot count (TextField allowing 0+)</li>
+    <li><strong>Delete Button:</strong> Per-row delete button</li>
+    <li><strong>filterTable():</strong> Filters by destination, captain name, status, or flight ID</li>
+</ul>
+
+<h3>7.4 Passengers Page</h3>
+<p><code>PassengersPage.java</code> &mdash; Green-themed passenger management:</p>
+<ul>
+    <li>TableView with ID, Name, Identity, Nationality, Passport, Pass End Date, Destination, Flight, Actions</li>
+    <li>Loads passengers from all flights via <code>loadAllPassengers()</code></li>
+    <li>Add dialog with all passenger fields</li>
+    <li><strong>filterTable():</strong> Filters by name, identity, nationality, passport</li>
+</ul>
+
+<h3>7.5 Pilots Page</h3>
+<p><code>PilotsPage.java</code> &mdash; Orange-themed pilot management:</p>
+<ul>
+    <li>TableView with ID, Name, Identity, Nationality, Salary, Hours, Licenses, Actions</li>
+    <li>Salary displayed using <code>SimpleStringProperty</code> with formatting</li>
+    <li>Add dialog with name, identity, nationality, salary, hours, licenses fields</li>
+    <li><strong>filterTable():</strong> Filters by name, identity, nationality, salary</li>
+</ul>
+
+<h3>7.6 Co-Pilots Page</h3>
+<p><code>CoPilotsPage.java</code> &mdash; Purple-themed co-pilot management:</p>
+<ul>
+    <li>TableView with ID, Name, Identity, Nationality, Salary, Hours, Languages, Actions</li>
+    <li>Languages displayed as comma-separated string via <code>SimpleStringProperty</code></li>
+    <li>Add dialog with all fields including languages (comma-separated input)</li>
+    <li><strong>filterTable():</strong> Filters by name, identity, nationality, languages</li>
+</ul>
+
+<h3>7.7 Reports Page</h3>
+<p><code>ReportsPage.java</code> &mdash; Teal-themed reports center:</p>
+<ul>
+    <li><strong>5 Report Buttons:</strong> Flight, Passenger, Pilot, Co-Pilot, Full Summary</li>
+    <li><strong>TextArea Display:</strong> Monospace font, read-only, shows generated report</li>
+    <li><strong>Save as .txt:</strong> FileChooser + <code>Files.writeString()</code> to save report to disk</li>
+    <li>Error handling: shows alert dialogs for empty reports or save errors</li>
+</ul>
+
+<h3>7.8 Chat Page</h3>
+<p><code>ChatPage.java</code> &mdash; Red-themed chat interface:</p>
+<ul>
+    <li>Left side: connection controls (server IP, port, nickname, connect button)</li>
+    <li>Right side: message display area + send button</li>
+    <li>Uses <code>chatclient.java</code> which connects to <code>server.py</code> on port 5555</li>
+    <li>Messages updated on JavaFX thread via <code>Platform.runLater()</code></li>
+</ul>
+
+<h3>7.9 Settings Page</h3>
+<p><code>SettingsPage.java</code> &mdash; Grey-themed settings display:</p>
+<ul>
+    <li>System information cards (app name, version, Java version, JavaFX version)</li>
+    <li>Display settings info</li>
+    <li>About section</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="navigation">8. Navigation System</h2>
+
+<h3>How it works</h3>
+<ol>
+    <li><code>Sidebar</code> has 8 nav buttons: Dashboard, Flights, Passengers, Pilots, Co-Pilots, Reports, Chat, Settings</li>
+    <li>Clicking a button calls <code>mainApp.navigateTo(page)</code></li>
+    <li><code>Main.navigateTo()</code> clears <code>centerStack</code> and creates the appropriate page</li>
+    <li>Each page is a VBox/StackPane added to the center of the BorderPane</li>
+    <li><code>FadeTransition</code> (250ms) provides smooth page transition</li>
+</ol>
+
+<h3>Key behaviors</h3>
+<ul>
+    <li><strong>Sidebar skip:</strong> If already on that page, <code>if (page.equals(activePage)) return;</code> prevents re-navigation</li>
+    <li><strong>Active state:</strong> Sidebar tracks <code>activeButton</code> and <code>activePage</code> to highlight the current nav item</li>
+    <li><strong>Error handling:</strong> <code>navigateTo()</code> is wrapped in try-catch; errors show a card instead of crashing</li>
+    <li><strong>TopBar updates:</strong> Title changes to match the current page</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="search">9. Search System</h2>
+<p>The search bar is in the TopBar and works as follows:</p>
+<ol>
+    <li><code>TopBar.setSearchCallback(Consumer&lt;String&gt;)</code> registers a listener on the text field</li>
+    <li>When text changes, <code>Main.filterSearch(query)</code> is called</li>
+    <li><code>filterSearch()</code> checks the current page type and calls <code>filterTable(query)</code> on it</li>
+    <li>Each page implements <code>filterTable(String query)</code> which filters the TableView items</li>
+    <li>Works on: FlightsPage, PassengersPage, PilotsPage, CoPilotsPage</li>
+    <li>Search is case-insensitive, partial match (contains)</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="chat">10. Chat System (LAN)</h2>
+
+<h3>Server (Python)</h3>
+<ul>
+    <li>File: <code>server/server.py</code></li>
+    <li>TCP socket server on <code>0.0.0.0:5555</code></li>
+    <li>Threaded: each client gets its own thread</li>
+    <li>Broadcasts messages to ALL clients (including sender)</li>
+    <li>Appends <code>\n</code> to every message (required for Java's <code>readLine()</code>)</li>
+    <li>Handles client disconnect gracefully</li>
+    <li>Uses <code>SO_REUSEADDR</code> for quick restart</li>
+</ul>
+
+<h3>Client (Java)</h3>
+<ul>
+    <li>File: <code>chatclient.java</code></li>
+    <li>Connects via Socket, sends nickname first</li>
+    <li>Reads messages in a background thread, updates TextArea via <code>Platform.runLater()</code></li>
+    <li>Uses UTF-8 encoding (supports Arabic text)</li>
+    <li>Auto-flushes output with <code>PrintWriter(out, true)</code></li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="reports">11. Reports System</h2>
+<p>5 report types, all generated as formatted text strings:</p>
+<ol>
+    <li><strong>Flight Report:</strong> Lists all flights with ID, destination, captain, seats, passengers count, co-pilots, status</li>
+    <li><strong>Passenger Report:</strong> Lists all passengers from all flights with full details</li>
+    <li><strong>Pilot Report:</strong> Lists all pilots with salary, hours, licenses</li>
+    <li><strong>Co-Pilot Report:</strong> Lists all co-pilots with salary, hours, languages</li>
+    <li><strong>Full Summary:</strong> Combined overview of everything</li>
+</ol>
+<p>Reports display in a monospace TextArea. "Save as .txt" uses <code>FileChooser</code> + <code>Files.writeString()</code>.</p>
+
+<!-- ============================================================ -->
+<h2 id="welcome">12. Welcome Screen</h2>
+<ul>
+    <li>StackPane overlay covering the entire window</li>
+    <li>Dark gradient background (#1a2410 &rarr; #2F3A1D &rarr; #1a2410)</li>
+    <li>Logo circle with "A" letter, title, subtitle, 4 feature icons, animated airplane, "Enter System" button</li>
+    <li>Airplane has a <code>ScaleTransition</code> pulse (1.0 &rarr; 1.06, 2.5s cycle)</li>
+    <li><strong>Dismissal:</strong> Button calls <code>onEnter.run()</code> which removes the overlay from <code>baseRoot</code></li>
+    <li>The main app (sidebar, topbar, dashboard) loads behind the welcome screen</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="bugs-fixed">13. Bugs Fixed During Development</h2>
+
+<h3>13.1 Content disappearing when navigating</h3>
+<p><span class="badge badge-green">FIXED</span> <code>Main.java:67</code> &mdash; Wrapped the <code>navigateTo()</code> switch in try-catch. Previously, any exception in page creation caused the center to go blank with no way to recover.</p>
+
+<h3>13.2 Sidebar re-navigating to same page</h3>
+<p><span class="badge badge-green">FIXED</span> <code>Sidebar.java:113</code> &mdash; Added <code>if (page.equals(activePage)) return;</code> before calling navigateTo().</p>
+
+<h3>13.3 Dashboard hover effect glitch</h3>
+<p><span class="badge badge-green">FIXED</span> <code>DashboardPage.java</code> &mdash; Removed anonymous <code>addHoverEffect()</code> calls that were causing visual glitches.</p>
+
+<h3>13.4 StringBinding anonymous instantiation failures</h3>
+<p><span class="badge badge-green">FIXED</span> All pages &mdash; Replaced <code>StringBinding</code> with <code>SimpleStringProperty</code> for all formatted table columns.</p>
+
+<h3>13.5 Search bar not working</h3>
+<p><span class="badge badge-green">FIXED</span> &mdash; Added <code>TopBar.setSearchCallback()</code>, <code>Main.filterSearch()</code>, and <code>filterTable()</code> to each page.</p>
+
+<h3>13.6 Co-pilot count locked to ComboBox</h3>
+<p><span class="badge badge-green">FIXED</span> <code>FlightsPage.java:238</code> &mdash; Changed from ComboBox (2/3/4 only) to TextField allowing any number including 0.</p>
+
+<h3>13.7 Flight constructor crash with 0 co-pilots</h3>
+<p><span class="badge badge-green">FIXED</span> <code>Flight.java:18</code> &mdash; Changed from <code>if copiloList.size() &lt; 2 throw</code> to <code>if copiloList == null, create empty list</code>.</p>
+
+<h3>13.8 Flight status not changeable</h3>
+<p><span class="badge badge-green">FIXED</span> <code>FlightsPage.java:124-162</code> &mdash; Status column is now a ComboBox cell factory allowing inline status changes.</p>
+
+<h3>13.9 Chat messages not appearing</h3>
+<p><span class="badge badge-green">FIXED</span> <code>server.py:14,40</code> &mdash; Server was sending without <code>\n</code> (Java's <code>readLine()</code> blocks forever without newline). Also broadcast excluded sender; now sends to all clients.</p>
+
+<h3>13.10 Welcome screen not filling window</h3>
+<p><span class="badge badge-green">FIXED</span> <code>WelcomePage.java:25-26</code> &mdash; Added <code>setMaxWidth(Double.MAX_VALUE)</code> + <code>setMaxHeight(Double.MAX_VALUE)</code> and <code>setMinWidth(0)</code>/<code>setMinHeight(0)</code>.</p>
+
+<h3>13.11 Welcome screen freeze (primaryStage.hide/show)</h3>
+<p><span class="badge badge-green">FIXED</span> <code>Main.java:49-54</code> &mdash; Switched from <code>primaryStage.hide()/show()</code> to StackPane overlay approach using <code>WelcomePage[] welcomeHolder</code> pattern.</p>
+
+<h3>13.12 Dashboard stat cards hover glitch</h3>
+<p><span class="badge badge-green">FIXED</span> &mdash; Removed <code>addHoverEffect</code> from DashboardPage stat cards and management cards.</p>
+
+<h3>13.13 Infinite loop in addFlight()</h3>
+<p><span class="badge badge-green">FIXED</span> <code>adding.java:206-219</code> &mdash; When passengers > chairs, the loop printed an error but never re-prompted for input. Now it re-prompts for the number of passengers.</p>
+
+<h3>13.14 Co-pilot selection reset bug</h3>
+<p><span class="badge badge-green">FIXED</span> <code>adding.java:244-251</code> &mdash; <code>choosencopilots</code> was recreated inside the for loop (wiped each iteration). Moved <code>new ArrayList&lt;&gt;()</code> outside the loop. Also fixed line 279 to pass <code>choosencopilots</code> instead of <code>copilots</code> to Flight constructor.</p>
+
+<!-- ============================================================ -->
+<h2 id="known-issues">14. Known Issues &amp; Limitations</h2>
+
+<div class="warn-box">
+<strong>Data Persistence:</strong> All data is stored in <code>static ArrayLists</code> in <code>adding.java</code>. Data resets every time the application is restarted. No database or file-based storage is implemented.
+</div>
+
+<ul>
+    <li><strong>No data persistence:</strong> ArrayLists reset on restart. Needs database or file storage.</li>
+    <li><strong>Passengere class:</strong> Does not extend Person; has duplicate fields.</li>
+    <li><strong>static ID counters:</strong> ID counters are static and don't reset, so IDs keep incrementing across instances.</li>
+    <li><strong>Server broadcast to all:</strong> Sender sees their own message too (duplicated).</li>
+    <li><strong>No user authentication:</strong> No login system; the app is single-user.</li>
+    <li><strong>ChatWindowController.java:</strong> Excluded from compilation (legacy unused file).</li>
+    <li><strong>Unchecked warnings:</strong> Compiler warnings about unchecked/unsafe operations (raw types).</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="commands">15. Commands Reference</h2>
+
+<h3>Compile (full)</h3>
+<pre><code>cd /home/idkrealyyea/Desktop/PROJECT/project && \
+rm -rf bin && mkdir -p bin && \
+javac \
+  --module-path "lib/javafx.base.jar:lib/javafx.controls.jar:lib/javafx.graphics.jar:lib/javafx.fxml.jar:lib/javafx.media.jar:lib/javafx.swing.jar:lib/javafx.web.jar" \
+  --add-modules javafx.controls,javafx.graphics,javafx.base,javafx.fxml \
+  -d bin \
+  $(find src -name "*.java" ! -name "Chatwindowcontroller.java") 2>&1</code></pre>
+
+<h3>Run (terminal)</h3>
+<pre><code>cd /home/idkrealyyea/Desktop/PROJECT/project && \
+java \
+  --module-path "lib/javafx.base.jar:lib/javafx.controls.jar:lib/javafx.graphics.jar:lib/javafx.fxml.jar:lib/javafx.media.jar:lib/javafx.swing.jar:lib/javafx.web.jar" \
+  --add-modules javafx.controls,javafx.graphics,javafx.base,javafx.fxml \
+  -cp bin \
+  Launcher 2>&1</code></pre>
+
+<h3>Run Chat Server</h3>
+<pre><code>cd /home/idkrealyyea/Desktop/PROJECT/project/server && \
+python3 server.py</code></pre>
+
+<h3>launch.json (VS Code)</h3>
+<pre><code>{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Airport Management",
+            "request": "launch",
+            "mainClass": "Launcher",
+            "vmArgs": "--module-path /usr/share/openjfx/lib --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base"
+        }
+    ]
+}</code></pre>
+
+<div class="success-box">
+<strong>To save as PDF:</strong> Press <code>Ctrl + P</code> in your browser and select "Save as PDF" as the destination. Adjust margins to "None" for best results.
+</div>
+
+<p style="text-align:center; color:#6b6b6b; font-size:12px; margin-top:40px;">&mdash; End of Documentation &mdash;</p>
+
+</div>
+</body>
+</html>
