@@ -61,7 +61,7 @@ public class ReportsPage extends VBox {
             "-fx-background-radius: 12; -fx-padding: 10 18; -fx-cursor: hand;"
         );
         saveBtn.setOnMouseEntered(e -> saveBtn.setStyle(
-            "-fx-background-color: " + Color.web(Colors.REPORT_SOLID).deriveColor(0, 1, 0.9, 1) + "; -fx-text-fill: white; " +
+            "-fx-background-color: " + Colors.deriveColor(Colors.REPORT_SOLID, 0, 1, 0.9, 1) + "; -fx-text-fill: white; " +
             "-fx-font-size: 12; -fx-font-weight: bold; " +
             "-fx-background-radius: 12; -fx-padding: 10 18; -fx-cursor: hand;"
         ));
@@ -102,7 +102,7 @@ public class ReportsPage extends VBox {
             "-fx-background-radius: 12; -fx-padding: 10 18; -fx-cursor: hand;"
         );
         btn.setOnMouseEntered(e -> btn.setStyle(
-            "-fx-background-color: " + Color.web(solid).deriveColor(0, 1, 1, 0.2) + "; " +
+            "-fx-background-color: " + Colors.deriveColor(solid, 0, 1, 1, 0.2) + "; " +
             "-fx-text-fill: " + solid + "; " +
             "-fx-font-size: 12; -fx-font-weight: bold; " +
             "-fx-background-radius: 12; -fx-padding: 10 18; -fx-cursor: hand;"

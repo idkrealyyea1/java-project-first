@@ -69,7 +69,7 @@ public class FlightsPage extends VBox {
             "-fx-padding: 10 20; -fx-cursor: hand;"
         );
         addBtn.setOnMouseEntered(e -> addBtn.setStyle(
-            "-fx-background-color: " + Color.web(Colors.FLIGHT_SOLID).deriveColor(0, 1, 0.9, 1) + "; -fx-text-fill: white; " +
+            "-fx-background-color: " + Colors.deriveColor(Colors.FLIGHT_SOLID, 0, 1, 0.9, 1) + "; -fx-text-fill: white; " +
             "-fx-font-size: 13; -fx-font-weight: bold; -fx-background-radius: 12; " +
             "-fx-padding: 10 20; -fx-cursor: hand;"
         ));
@@ -152,7 +152,6 @@ public class FlightsPage extends VBox {
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    combo.getItems().clear();
                     int idx = getIndex();
                     if (idx < 0 || idx >= getTableView().getItems().size()) {
                         setGraphic(null);
@@ -160,24 +159,28 @@ public class FlightsPage extends VBox {
                     }
                     Flight flight = getTableView().getItems().get(idx);
                     status.FlightStatus current = flight.getFlightStatus();
+                    java.util.ArrayList<String> newItems = new java.util.ArrayList<>();
                     switch (current) {
                         case SCHEDULED:
-                            combo.getItems().addAll("BOARDING", "CANCELLED");
+                            newItems.add("BOARDING");
+                            newItems.add("CANCELLED");
                             combo.setDisable(false);
                             break;
                         case BOARDING:
-                            combo.getItems().addAll("DEPARTED", "CANCELLED");
+                            newItems.add("DEPARTED");
+                            newItems.add("CANCELLED");
                             combo.setDisable(false);
                             break;
                         case DEPARTED:
-                            combo.getItems().add("DEPARTED");
+                            newItems.add("DEPARTED");
                             combo.setDisable(true);
                             break;
                         case CANCELLED:
-                            combo.getItems().add("CANCELLED");
+                            newItems.add("CANCELLED");
                             combo.setDisable(true);
                             break;
                     }
+                    combo.setItems(javafx.collections.FXCollections.observableArrayList(newItems));
                     combo.setValue(item);
                     setGraphic(combo);
                 }

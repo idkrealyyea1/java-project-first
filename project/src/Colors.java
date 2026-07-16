@@ -56,4 +56,13 @@ public class Colors {
     public static final String SIDEBAR_BG = SIDEBAR;
     public static final String DARK_TEXT = TEXT_PRIMARY;
     public static final String GREY_TEXT = TEXT_SECONDARY;
+
+    public static String deriveColor(String hexColor, double hueShift, double saturationMult, double brightnessMult, double opacity) {
+        javafx.scene.paint.Color base = javafx.scene.paint.Color.web(hexColor);
+        javafx.scene.paint.Color derived = base.deriveColor(hueShift, saturationMult, brightnessMult, opacity);
+        return String.format("#%02X%02X%02X",
+            (int) (derived.getRed() * 255),
+            (int) (derived.getGreen() * 255),
+            (int) (derived.getBlue() * 255));
+    }
 }

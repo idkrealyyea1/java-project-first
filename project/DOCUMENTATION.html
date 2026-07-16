@@ -83,10 +83,12 @@
     <li><strong>Passenger Management</strong> &mdash; Add, view, search, delete passengers</li>
     <li><strong>Pilot Roster</strong> &mdash; Salary, flight hours, license management</li>
     <li><strong>Co-Pilot Roster</strong> &mdash; Salary, hours, language management</li>
-    <li><strong>Reports</strong> &mdash; 5 report types with save-to-file functionality</li>
+    <li><strong>Reports</strong> &mdash; 6 report types (Flight, Passenger, Pilot, Co-Pilot, Employee, Full Summary) with save-to-file functionality</li>
     <li><strong>Chat (LAN)</strong> &mdash; Real-time socket chat via Python server</li>
     <li><strong>Search</strong> &mdash; Global search bar filters the current page's table</li>
     <li><strong>Welcome Screen</strong> &mdash; Animated landing page with airplane pulse</li>
+    <li><strong>Normal Employees</strong> &mdash; CRUD management for regular employees (name, identity, nationality, salary)</li>
+    <li><strong>Data Persistence</strong> &mdash; Passengers saved to <code>passengers.txt</code>; flights log written to <code>flights-log.txt</code> on app close</li>
 </ul>
 
 <!-- ============================================================ -->
@@ -146,38 +148,44 @@ python3 server.py</code></pre>
 <div class="file-tree">project/
 ├── .vscode/
 │   ├── launch.json          # Single config: "Airport Management"
-│   └── settings.json        # referencesLibraries for project/lib/*.jar
+│   └── settings.json        # referencesLibraries for JavaFX JARs
 ├── bin/                     # Compiled .class files
 ├── lib/                     # JavaFX JAR copies (javafx.base.jar, javafx.controls.jar, etc.)
 ├── server/
 │   └── server.py            # Python TCP socket chat server
+├── passengers.txt           # Auto-generated passenger persistence file
+├── flights-log.txt          # Auto-generated flights log on app close
+├── DOCUMENTATION.html       # This documentation file
+├── Code_Explainer.html      # Line-by-line code explanation
 └── src/
     ├── Launcher.java        # Entry point (bypasses JDK 17 module check)
-    ├── Main.java            # JavaFX Application: creates root layout, welcome screen, navigation
-    ├── Sidebar.java         # Left sidebar: logo, nav buttons, admin card
+    ├── Main.java            # Navigation, welcome overlay, search routing, data loading
+    ├── Sidebar.java         # Left sidebar: logo, 9 nav buttons, admin card
     ├── TopBar.java          # Top bar: title, search, notifications, date/time, profile
-    ├── Colors.java          # All color constants + color families
+    ├── Colors.java          # All color constants + 7 color families
     ├── WelcomePage.java     # Animated welcome/splash screen
-    ├── DashboardPage.java   # Dashboard: stats, management grid, flights table, quick actions
-    ├── FlightsPage.java     # Flight management: table, status ComboBox, add dialog
-    ├── PassengersPage.java  # Passenger management: table, add dialog, search filter
+    ├── DashboardPage.java   # Dashboard: stats (5 cards), management grid (5), flights table, quick actions (6)
+    ├── FlightsPage.java     # Flight management: table, sequential status ComboBox, add dialog
+    ├── PassengersPage.java  # Passenger management: table, add dialog, search, persistence
     ├── PilotsPage.java      # Pilot management: table, salary, licenses, add dialog
     ├── CoPilotsPage.java    # Co-pilot management: table, languages, add dialog
-    ├── ReportsPage.java     # Reports center: 5 report types, save to .txt
+    ├── ReportsPage.java     # Reports center: 6 report types, save to .txt
     ├── ChatPage.java        # Chat interface: connect, send, message area
     ├── SettingsPage.java    # Settings: system info display
-    ├── adding.java          # Static ArrayLists for data storage + console add methods
+    ├── NormalEmployeesPage.java  # Employee management: table, add/delete, search
+    ├── DataStorage.java     # File I/O: save/load passengers, write flights log
+    ├── adding.java          # Static ArrayLists for data storage (flights, pilots, copilots, employees)
     ├── checking.java        # Input validation utilities (getValidInt, getValidDouble, etc.)
     ├── Flight.java          # Flight class (extends status) with FlightStatus enum
     ├── Flighter.java        # Pilot class (extends Employee)
     ├── modiefoun.java       # Co-pilot class (extends Employee)
+    ├── normalemployee.java  # Normal employee class (extends Employee, id + salary)
     ├── Passengere.java      # Passenger class (standalone, does NOT extend Person)
     ├── Person.java          # Abstract base class (name, identity, nationality)
     ├── Employee.java        # Abstract class extending Person
     ├── status.java          # Contains FlightStatus enum (SCHEDULED, BOARDING, DEPARTED, CANCELLED)
-    ├── normalemployee.java  # (Legacy/unused)
-    ├── App.java             # (Legacy/unused - replaced by Main.java)
     ├── chatclient.java      # Socket chat client for JavaFX
+    ├── App.java             # (Legacy/unused - replaced by Main.java)
     └── Chatwindowcontroller.java  # (Excluded from compilation - unused)</div>
 
 <!-- ============================================================ -->
@@ -340,11 +348,11 @@ Passengere (standalone - does NOT extend Person)</code></pre>
 
 <h3>How it works</h3>
 <ol>
-    <li><code>Sidebar</code> has 8 nav buttons: Dashboard, Flights, Passengers, Pilots, Co-Pilots, Reports, Chat, Settings</li>
+    <li><code>Sidebar</code> has 9 nav buttons: Dashboard, Flights, Passengers, Pilots, Co-Pilots, Reports, Chat, Settings, Employees</li>
     <li>Clicking a button calls <code>mainApp.navigateTo(page)</code></li>
-    <li><code>Main.navigateTo()</code> clears <code>centerStack</code> and creates the appropriate page</li>
+    <li><code>Main.navigateTo()</code> stops any running FadeTransition, resets opacity, clears <code>centerStack</code>, creates the appropriate page, and adds it</li>
     <li>Each page is a VBox/StackPane added to the center of the BorderPane</li>
-    <li><code>FadeTransition</code> (250ms) provides smooth page transition</li>
+    <li><code>FadeTransition</code> (200ms) provides smooth page transition</li>
 </ol>
 
 <h3>Key behaviors</h3>
@@ -353,6 +361,7 @@ Passengere (standalone - does NOT extend Person)</code></pre>
     <li><strong>Active state:</strong> Sidebar tracks <code>activeButton</code> and <code>activePage</code> to highlight the current nav item</li>
     <li><strong>Error handling:</strong> <code>navigateTo()</code> is wrapped in try-catch; errors show a card instead of crashing</li>
     <li><strong>TopBar updates:</strong> Title changes to match the current page</li>
+    <li><strong>Safe transitions:</strong> Old FadeTransition is stopped before starting a new one (prevents content disappearing on rapid clicks)</li>
 </ul>
 
 <!-- ============================================================ -->
@@ -417,7 +426,7 @@ Passengere (standalone - does NOT extend Person)</code></pre>
 <h2 id="bugs-fixed">13. Bugs Fixed During Development</h2>
 
 <h3>13.1 Content disappearing when navigating</h3>
-<p><span class="badge badge-green">FIXED</span> <code>Main.java:67</code> &mdash; Wrapped the <code>navigateTo()</code> switch in try-catch. Previously, any exception in page creation caused the center to go blank with no way to recover.</p>
+<p><span class="badge badge-green">FIXED</span> <code>Main.java:69-72</code> &mdash; Two-part fix: (1) Wrapped the <code>navigateTo()</code> switch in try-catch so exceptions show an error card instead of blank screen. (2) Stored the current <code>FadeTransition</code> in <code>currentFade</code> and stopped it before starting a new one. Previously, each navigation created a new FadeTransition without stopping the old one — multiple competing transitions fought over the opacity property, leaving it stuck at 0.0 (invisible). Also set <code>centerStack.setOpacity(1.0)</code> before clearing to ensure content is always visible.</p>
 
 <h3>13.2 Sidebar re-navigating to same page</h3>
 <p><span class="badge badge-green">FIXED</span> <code>Sidebar.java:113</code> &mdash; Added <code>if (page.equals(activePage)) return;</code> before calling navigateTo().</p>

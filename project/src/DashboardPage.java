@@ -344,7 +344,7 @@ public class DashboardPage extends VBox {
             "-fx-padding: 0 14;"
         );
         btn.setOnMouseEntered(e -> btn.setStyle(
-            "-fx-background-color: " + Color.web(solid).deriveColor(0, 1, 1, 0.18) + "; " +
+            "-fx-background-color: " + Colors.deriveColor(solid, 0, 1, 1, 0.18) + "; " +
             "-fx-text-fill: " + solid + "; " +
             "-fx-font-size: 12; -fx-font-weight: bold; " +
             "-fx-background-radius: 10; " +

@@ -68,7 +68,7 @@ public class CoPilotsPage extends VBox {
             "-fx-padding: 10 20; -fx-cursor: hand;"
         );
         addBtn.setOnMouseEntered(e -> addBtn.setStyle(
-            "-fx-background-color: " + Color.web(Colors.COPILOT_SOLID).deriveColor(0, 1, 0.9, 1) + "; -fx-text-fill: white; " +
+            "-fx-background-color: " + Colors.deriveColor(Colors.COPILOT_SOLID, 0, 1, 0.9, 1) + "; -fx-text-fill: white; " +
             "-fx-font-size: 13; -fx-font-weight: bold; -fx-background-radius: 12; " +
             "-fx-padding: 10 20; -fx-cursor: hand;"
         ));
