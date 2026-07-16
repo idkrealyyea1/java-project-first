@@ -1,14 +1,13 @@
 import javafx.application.Application;
-import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class Main extends Application {
 
@@ -40,15 +39,19 @@ public class Main extends Application {
         centerStack = new StackPane();
         centerStack.setStyle("-fx-background-color: " + Colors.BACKGROUND + ";");
         centerStack.setPadding(new Insets(0));
+        centerStack.setMinWidth(0);
+        centerStack.setMinHeight(0);
+        javafx.scene.layout.VBox.setVgrow(centerStack, javafx.scene.layout.Priority.ALWAYS);
         root.setCenter(centerStack);
 
-        navigateTo("dashboard");
-
-        DataStorage.loadPassengers();
+        DataStorage.loadAll();
 
         baseRoot.getChildren().add(root);
 
+        navigateTo("dashboard");
+
         primaryStage.setOnCloseRequest(e -> {
+            DataStorage.saveAll();
             DataStorage.writeFlightsLog();
         });
 
@@ -70,46 +73,48 @@ public class Main extends Application {
         centerStack.getChildren().clear();
         currentPage = page;
 
+        Node pageContent = null;
+
         try {
             switch (page) {
                 case "dashboard":
-                    centerStack.getChildren().add(new DashboardPage(this));
+                    pageContent = new DashboardPage(this);
                     topBar.setTitle("Dashboard");
                     break;
                 case "flights":
-                    centerStack.getChildren().add(new FlightsPage());
+                    pageContent = new FlightsPage();
                     topBar.setTitle("Flights");
                     break;
                 case "passengers":
-                    centerStack.getChildren().add(new PassengersPage());
+                    pageContent = new PassengersPage();
                     topBar.setTitle("Passengers");
                     break;
                 case "pilots":
-                    centerStack.getChildren().add(new PilotsPage());
+                    pageContent = new PilotsPage();
                     topBar.setTitle("Pilots");
                     break;
                 case "copilots":
-                    centerStack.getChildren().add(new CoPilotsPage());
+                    pageContent = new CoPilotsPage();
                     topBar.setTitle("Co-Pilots");
                     break;
                 case "reports":
-                    centerStack.getChildren().add(new ReportsPage());
+                    pageContent = new ReportsPage();
                     topBar.setTitle("Reports");
                     break;
                 case "chat":
-                    centerStack.getChildren().add(new ChatPage());
+                    pageContent = new ChatPage();
                     topBar.setTitle("Chat");
                     break;
                 case "normalemployees":
-                    centerStack.getChildren().add(new NormalEmployeesPage());
+                    pageContent = new NormalEmployeesPage();
                     topBar.setTitle("Normal Employees");
                     break;
                 case "settings":
-                    centerStack.getChildren().add(new SettingsPage());
+                    pageContent = new SettingsPage();
                     topBar.setTitle("Settings");
                     break;
                 default:
-                    centerStack.getChildren().add(new DashboardPage(this));
+                    pageContent = new DashboardPage(this);
                     topBar.setTitle("Dashboard");
                     break;
             }
@@ -130,14 +135,13 @@ public class Main extends Application {
             Label errMsg = new Label(e.getMessage() != null ? e.getMessage() : "Unknown error");
             errMsg.setStyle("-fx-text-fill: " + Colors.TEXT_SECONDARY + "; -fx-font-size: 12;");
             errorCard.getChildren().addAll(errIcon, errTitle, errMsg);
-            centerStack.getChildren().add(errorCard);
+            pageContent = errorCard;
             topBar.setTitle("Error");
         }
 
-        FadeTransition fade = new FadeTransition(Duration.millis(250), centerStack);
-        fade.setFromValue(0.0);
-        fade.setToValue(1.0);
-        fade.play();
+        if (pageContent != null) {
+            centerStack.getChildren().add(pageContent);
+        }
     }
 
     private void filterSearch(String query) {

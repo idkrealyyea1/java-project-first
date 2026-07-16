@@ -119,6 +119,7 @@ public class NormalEmployeesPage extends VBox {
                     normalemployee emp = getTableView().getItems().get(getIndex());
                     adding.normalEmployees.remove(emp);
                     getTableView().getItems().remove(emp);
+                    DataStorage.saveAll();
                 });
                 setGraphic(deleteBtn);
             }
@@ -207,6 +208,7 @@ public class NormalEmployeesPage extends VBox {
                 normalemployee emp = new normalemployee(nameField.getText(), idField.getText(), natField.getText(), salary);
                 adding.normalEmployees.add(emp);
                 table.getItems().setAll(adding.normalEmployees);
+                DataStorage.saveAll();
                 dialog.close();
             } catch (NumberFormatException ex) {
                 errorLabel.setText("Please enter a valid number for salary");

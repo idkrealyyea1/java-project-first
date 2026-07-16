@@ -119,7 +119,10 @@ public class FlightsPage extends VBox {
         copilotsCol.setPrefWidth(90);
 
         TableColumn<Flight, String> statusCol = new TableColumn<>("Status");
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("flightStatus"));
+        statusCol.setCellValueFactory(cell -> {
+            status.FlightStatus s = cell.getValue().getFlightStatus();
+            return new SimpleStringProperty(s != null ? s.toString() : "SCHEDULED");
+        });
         statusCol.setPrefWidth(140);
         statusCol.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
             private final javafx.scene.control.ComboBox<String> combo = new javafx.scene.control.ComboBox<>();
@@ -137,6 +140,7 @@ public class FlightsPage extends VBox {
                         String val = combo.getValue();
                         if (val != null && !val.equals(flight.getFlightStatus().toString())) {
                             flight.setFlightStatus(status.FlightStatus.valueOf(val));
+                            DataStorage.saveAll();
                             updateItem(val, false);
                         }
                     }
@@ -149,7 +153,12 @@ public class FlightsPage extends VBox {
                     setGraphic(null);
                 } else {
                     combo.getItems().clear();
-                    Flight flight = getTableView().getItems().get(getIndex());
+                    int idx = getIndex();
+                    if (idx < 0 || idx >= getTableView().getItems().size()) {
+                        setGraphic(null);
+                        return;
+                    }
+                    Flight flight = getTableView().getItems().get(idx);
                     status.FlightStatus current = flight.getFlightStatus();
                     switch (current) {
                         case SCHEDULED:
@@ -188,6 +197,7 @@ public class FlightsPage extends VBox {
                     Flight flight = getTableView().getItems().get(getIndex());
                     adding.flightslists.remove(flight);
                     getTableView().getItems().remove(flight);
+                    DataStorage.saveAll();
                 });
                 setGraphic(deleteBtn);
             }
@@ -317,7 +327,7 @@ public class FlightsPage extends VBox {
                 Flight flight = new Flight(dest, passengerList, captain, copilotList, seats);
                 adding.flightslists.add(flight);
                 table.getItems().setAll(adding.flightslists);
-                DataStorage.savePassengers();
+                DataStorage.saveAll();
 
                 dialog.close();
             } catch (NumberFormatException ex) {

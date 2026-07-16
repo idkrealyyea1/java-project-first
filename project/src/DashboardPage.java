@@ -290,7 +290,10 @@ public class DashboardPage extends VBox {
         seatsCol.setPrefWidth(70);
 
         TableColumn<Flight, String> statusCol = new TableColumn<>("Status");
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("flightStatus"));
+        statusCol.setCellValueFactory(cell -> {
+            status.FlightStatus s = cell.getValue().getFlightStatus();
+            return new javafx.beans.property.SimpleStringProperty(s != null ? s.toString() : "SCHEDULED");
+        });
         statusCol.setPrefWidth(110);
 
         table.getColumns().addAll(idCol, destCol, captainCol, seatsCol, statusCol);

@@ -130,6 +130,7 @@ public class CoPilotsPage extends VBox {
                     modiefoun c = getTableView().getItems().get(getIndex());
                     adding.copilots.remove(c);
                     getTableView().getItems().remove(c);
+                    DataStorage.saveAll();
                 });
                 setGraphic(deleteBtn);
             }
@@ -237,6 +238,7 @@ public class CoPilotsPage extends VBox {
                 modiefoun copilot = new modiefoun(nameField.getText(), idField.getText(), natField.getText(), salary, languages, hours);
                 adding.copilots.add(copilot);
                 table.getItems().setAll(adding.copilots);
+                DataStorage.saveAll();
                 dialog.close();
             } catch (NumberFormatException ex) {
                 errorLabel.setText("Please enter valid numbers for salary/hours");

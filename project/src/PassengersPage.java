@@ -126,7 +126,7 @@ public class PassengersPage extends VBox {
                     Passengere p = getTableView().getItems().get(getIndex());
                     getTableView().getItems().remove(p);
                     removeFromFlights(p);
-                    DataStorage.savePassengers();
+                    DataStorage.saveAll();
                 });
                 setGraphic(deleteBtn);
             }
@@ -250,9 +250,9 @@ public class PassengersPage extends VBox {
                 adding.flightslists.add(defaultFlight);
             }
             adding.flightslists.get(0).getPassengersList().add(p);
-            loadAllPassengers();
-            DataStorage.savePassengers();
-            dialog.close();
+                loadAllPassengers();
+                    DataStorage.saveAll();
+                    dialog.close();
         });
 
         cancelBtn.setOnAction(e -> dialog.close());

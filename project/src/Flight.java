@@ -55,6 +55,14 @@ public class Flight extends status {
             return id;
         }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static void resetIdCounter(int value) {
+        ided = value;
+    }
+
     public ArrayList<modiefoun> getCopiloList() {
             return copiloList;
         }
@@ -79,6 +87,10 @@ public class Flight extends status {
             return passengersList;
         }
 
+        public void setPassengersList(ArrayList<Passengere> passengersList) {
+            this.passengersList = passengersList;
+        }
+
         public FlightStatus getFlightStatus() {
             return flightStatus;
         }
@@ -94,8 +106,7 @@ public class Flight extends status {
     }
     @Override
     public String toString() {
-        return "Flight ID: " + id + ", Destination: " + destination + ", Number of Chairs: " + numberofchairs +", Captain: " + nameofCaptin.getName() + ", Flight Status: " + flightStatus;
-                
+        return "Flight ID: " + id + ", Destination: " + destination + ", Number of Chairs: " + numberofchairs + ", Captain: " + (nameofCaptin != null ? nameofCaptin.getName() : "N/A") + ", Flight Status: " + flightStatus;
     }
 
     public int getnumofpassengeres(){

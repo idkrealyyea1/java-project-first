@@ -130,6 +130,7 @@ public class PilotsPage extends VBox {
                     Flighter f = getTableView().getItems().get(getIndex());
                     adding.flightersList.remove(f);
                     getTableView().getItems().remove(f);
+                    DataStorage.saveAll();
                 });
                 setGraphic(deleteBtn);
             }
@@ -237,6 +238,7 @@ public class PilotsPage extends VBox {
                 Flighter pilot = new Flighter(nameField.getText(), idField.getText(), natField.getText(), salary, hours, licenses);
                 adding.flightersList.add(pilot);
                 table.getItems().setAll(adding.flightersList);
+                DataStorage.saveAll();
                 dialog.close();
             } catch (NumberFormatException ex) {
                 errorLabel.setText("Please enter valid numbers for salary/hours");

@@ -60,6 +60,14 @@ public class Flighter extends Employee{
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static void resetIdCounter(int value) {
+        ided = value;
+    }
+
     public double getSalary() {
         return salary;
     }

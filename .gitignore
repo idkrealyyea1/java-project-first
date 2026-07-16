@@ -22,5 +22,8 @@ Thumbs.db
 # Data files generated at runtime
 flights.txt
 passengers.txt
+pilots.txt
+copilots.txt
+employees.txt
 flights-log.txt
 report_*.txt

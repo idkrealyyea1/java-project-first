@@ -40,6 +40,14 @@ public class Passengere extends Person {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static void resetIdCounter(int value) {
+        ided = value;
+    }
+
 
    
 
