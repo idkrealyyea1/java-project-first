@@ -220,6 +220,18 @@ public class PassengersPage extends VBox {
         destField.setStyle(INPUT_STYLE);
         destField.setMaxWidth(Double.MAX_VALUE);
 
+        javafx.scene.control.ComboBox<String> flightBox = new javafx.scene.control.ComboBox<>();
+        flightBox.setPromptText("Select Flight");
+        flightBox.setStyle(INPUT_STYLE);
+        flightBox.setMaxWidth(Double.MAX_VALUE);
+        for (Flight f : adding.flightslists) {
+            int seats = f.getNumberofchairs();
+            int taken = (f.getPassengersList() != null) ? f.getPassengersList().size() : 0;
+            int free = seats - taken;
+            String capName = f.getNameofCaptin() != null ? f.getNameofCaptin().getName() : "No Captain";
+            flightBox.getItems().add("Flight #" + f.getId() + " - " + f.getDestination() + " [" + free + "/" + seats + " seats free] - " + capName);
+        }
+
         Label errorLabel = new Label("");
         errorLabel.setStyle("-fx-text-fill: " + Colors.CHAT_SOLID + "; -fx-font-size: 12;");
 
@@ -241,24 +253,31 @@ public class PassengersPage extends VBox {
                 errorLabel.setText("Please fill at least name and identity");
                 return;
             }
+            int selIdx = flightBox.getSelectionModel().getSelectedIndex();
+            if (selIdx < 0 || selIdx >= adding.flightslists.size()) {
+                errorLabel.setText("Please select a flight");
+                return;
+            }
             Passengere p = new Passengere(
                 nameField.getText(), idField.getText(), natField.getText(),
                 passportField.getText(), endDateField.getText(), destField.getText()
             );
-            if (adding.flightslists.isEmpty()) {
-                Flight defaultFlight = new Flight("Unassigned", new java.util.ArrayList<>(), null, new java.util.ArrayList<>(), 0);
-                adding.flightslists.add(defaultFlight);
+            Flight selectedFlight = adding.flightslists.get(selIdx);
+            if (!selectedFlight.bookPassenger(p)) {
+                int seats = selectedFlight.getNumberofchairs();
+                int taken = (selectedFlight.getPassengersList() != null) ? selectedFlight.getPassengersList().size() : 0;
+                errorLabel.setText("Flight is full! (" + taken + "/" + seats + " seats taken)");
+                return;
             }
-            adding.flightslists.get(0).getPassengersList().add(p);
-                loadAllPassengers();
-                    DataStorage.saveAll();
-                    dialog.close();
+            loadAllPassengers();
+            DataStorage.saveAll();
+            dialog.close();
         });
 
         cancelBtn.setOnAction(e -> dialog.close());
 
-        root.getChildren().addAll(title, nameField, idField, natField, passportField, endDateField, destField, errorLabel, saveBtn, cancelBtn);
-        Scene scene = new Scene(root, 420, 500);
+        root.getChildren().addAll(title, nameField, idField, natField, passportField, endDateField, destField, flightBox, errorLabel, saveBtn, cancelBtn);
+        Scene scene = new Scene(root, 420, 560);
         dialog.setScene(scene);
         dialog.show();
     }

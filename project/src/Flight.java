@@ -36,14 +36,12 @@ public class Flight extends status {
         }
 
         public boolean bookPassenger(Passengere passenger) {
-        if (passengersList.size() < numberofchairs) {
-            passengersList.add(passenger);
-            return true;
+            if (numberofchairs > 0 && passengersList.size() < numberofchairs) {
+                passengersList.add(passenger);
+                return true;
+            }
+            return false;
         }
-        else
-        System.out.println("عذراً، الرحلة ممتلئة!");
-        return false;
-    }
 
 
     
